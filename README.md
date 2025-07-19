@@ -1,7 +1,3 @@
-Of course. Here is a comprehensive and professional `README.md` file for your "Smart Server Room Monitor" project. You can copy and paste this directly into your project's repository.
-
----
-
 # Smart Server Room Monitor
 
 An end-to-end IoT solution for providing real-time security monitoring and automated climate control for critical infrastructure environments. This project leverages an ESP32-CAM for on-site sensing and a Raspberry Pi gateway for data processing, analysis, and hosting a user-facing control panel built with Streamlit.
