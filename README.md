@@ -1,33 +1,45 @@
-# Smart Server Room Monitor
+# BMIT2123 IoT Project: Smart Server Room Monitor
 
-A comprehensive IoT system for monitoring and controlling the security and climate of a critical server room. This project provides real-time alerts, remote control capabilities, and historical data analysis through a modern web interface.
+**Project Title:** Smart Server Room Monitor with Remote Control & Security Alerts
 
-![System Architecture](https://via.placeholder.com/800x450.png?text=System+Architecture+Diagram+Here)
-*(This README is designed to be copied directly into a `README.md` file in your project's Git repository. The Graphviz code below can be rendered by many Markdown viewers or converted to images.)*
+**Team Members:**
+*   [Member 1 Name]
+*   [Member 2 Name]
+*   [Member 3 Name]
+*   [Member 4 Name]
 
-## Overview
+**Project Category:** Smart Manufacturing for Factories of the Future (Protecting Critical IT Infrastructure)
 
-Server rooms are the nerve center of any organization, but they are vulnerable to two major threats: unauthorized physical access and environmental failures (overheating). This project solves both problems by creating an intelligent, closed-loop monitoring system. It detects door entries, provides photographic evidence of access, automatically manages room temperature with a variable-speed fan, and allows for remote control and monitoring through a custom Streamlit web application.
+![Project Demo Placeholder](https://via.placeholder.com/800x450.png?text=Live+Demo+GIF+or+Screenshot+of+Streamlit+Dashboard)
 
-## Features
+## 1. Project Overview
 
--   **Real-Time Security Alerts:** Instant notification with photographic evidence when a door is opened.
+Server rooms are the nerve center of any organization, yet they are vulnerable to two major threats: **unauthorized physical access** and **environmental failures** like overheating. This project is a comprehensive, end-to-end IoT system designed to provide intelligent, active monitoring and control for such a critical environment.
+
+The system combines a physical sensor-and-actuator node with a powerful backend gateway and a web-based user interface. It actively manages room temperature with a variable-speed fan, physically secures the door with a solenoid lock, and provides instant security alerts with photographic evidence upon a potential breach.
+
+## 2. Key Features
+
+-   **Real-Time Security Alerts:** Instant notification with photographic evidence when the door is opened without authorization.
 -   **Audible & Visual Alarms:** A loud buzzer and flashing LED provide immediate on-site alerts during a security breach.
--   **Remote Door Control:** A solenoid lock can be unlocked remotely via the web dashboard.
--   **Automated Climate Control:** A variable-speed fan automatically adjusts to maintain the target temperature.
--   **Interactive Web Dashboard:** Built with Streamlit, the UI provides live data, historical charts, and system controls.
--   **Maintenance Mode:** A software toggle to allow for authorized access without triggering alarms.
+-   **Remote Door Control:** The door can be unlocked remotely via the web dashboard using a secure command flow.
+-   **Automated Climate Control:** A variable-speed fan automatically adjusts its speed to maintain a stable room temperature, preventing hardware damage.
+-   **Interactive Web Dashboard:** Built with Streamlit, the UI provides live data gauges, historical charts, a security event log with images, and system controls.
+-   **Maintenance Mode:** A software toggle to allow for authorized physical access without triggering security alarms.
 
 ---
 
-## System Architecture
+## 3. System Architecture
 
-The system is built on a robust, two-part architecture: a dedicated **Embedded Node** for sensing and actuation, and a powerful **Gateway & Application Server** running on the Raspberry Pi. Communication between the two is handled by MQTT for lightweight messaging and a direct endpoint for image transfers.
+The system utilizes a robust, distributed architecture that separates on-site tasks from backend processing. This design enhances reliability, security, and scalability.
+
+-   **NodeMCU ESP32:** Acts as the dedicated "field device." Its sole responsibilities are to read local sensors, control local actuators, and communicate efficiently with the gateway.
+-   **Raspberry Pi 5:** Serves as the central "gateway" and application server. It handles all heavy processing, secure communication with cloud services, hosts the user-facing web application, and manages the USB webcam.
 
 ```graphviz
 digraph System_Architecture {
     rankdir=LR;
-    graph [label="System Architecture & Data Flow", labelloc=t, fontsize=16];
+    graph [label="Overall System Architecture", labelloc=t, fontsize=16];
     node [shape=box, style=rounded, fontname="Arial"];
     edge [fontsize=10];
 
@@ -44,7 +56,6 @@ digraph System_Architecture {
         Firebase [label="Firebase\n(DB & Storage)", shape=database];
     }
     
-    // Connections
     Webcam -> RPi [label=" connect via USB"];
     ESP32 -> MQTT_Broker [label=" Publishes Events &\n Subscribes to Commands"];
     MQTT_Broker -> RPi [label=" Listens & Publishes"];
@@ -55,7 +66,7 @@ digraph System_Architecture {
 
 ---
 
-## Hardware & Components
+## 4. Hardware & Components
 
 | Role | Component | Connection Point | Purpose |
 | :--- | :--- | :--- | :--- |
@@ -73,15 +84,15 @@ digraph System_Architecture {
 
 ---
 
-## Logical Flows
+## 5. Logical Flows
 
-### 1. Climate Control Flow (Continuous Local Loop)
+### a. Climate Control Flow (Continuous Local Loop)
 
-This logic runs entirely on the **NodeMCU ESP32** and does not require an internet connection to function.
+This logic runs autonomously on the **NodeMCU ESP32**.
 
 ```graphviz
 digraph Climate_Control_Flow {
-    graph [label="Climate Control Logic", labelloc=t, fontsize=16];
+    graph [label="Climate Control Logic (on ESP32)", labelloc=t, fontsize=16];
     node [shape=box, style=rounded];
     
     Start [shape=ellipse, label="Loop Start"];
@@ -94,9 +105,9 @@ digraph Climate_Control_Flow {
 }
 ```
 
-### 2. Unauthorized Access Alert Flow (System-Wide Sequence)
+### b. Unauthorized Access Alert Flow (System-Wide Sequence)
 
-This sequence involves communication between every part of the system.
+This sequence shows the interaction between all system components during a security breach.
 
 ```graphviz
 digraph Alert_Sequence {
@@ -123,38 +134,35 @@ digraph Alert_Sequence {
 
 ---
 
-## Firebase Data Model
+## 6. Fulfillment of Assignment Requirements
 
-Our cloud data is structured into two main parts: a log of all events and a single object representing the current system state.
+This project has been explicitly designed to meet and exceed every requirement outlined in the BMIT2123 assignment brief.
 
-```graphviz
-digraph Data_Model {
-    graph [label="Firebase Database Structure", labelloc=t, fontsize=16];
-    node [shape=record, fontname="Arial"];
-    
-    Firebase_Root [label="<f0> Firebase Project | { <f1> event_logs (list) | <f2> system_status (object) }"];
-    Event_Log_Entry [label="{ <id> -M_unique_id | { timestamp | event_type | alert_level | image_url? | temperature_C } }"];
-    System_Status_Object [label="{ <f0> system_status | { is_maintenance_mode_on | is_door_open | last_command } }"];
-    
-    Firebase_Root:f1 -> Event_Log_Entry [label="contains multiple"];
-    Firebase_Root:f2 -> System_Status_Object [label="is a single object"];
-}
-```
+| Requirement (from Assignment PDF) | How This Project Fulfills It |
+| :--- | :--- |
+| **Use `Raspberry Pi 3/4` and `NodeMCU ESP32`** | **Met.** The project uses a NodeMCU ESP32 for the embedded node and a Raspberry Pi 5 as the gateway and application server. |
+| **`Input (sensors)`** | **Met.** Two primary sensors are used: a Magnetic Reed Switch (for door status) and a DHT22 (for temperature/humidity). |
+| **`Output (actuator / indicator)`** | **Met & Exceeded.** Seven output components are used: a Solenoid Lock, a DC Fan (via L298N Driver), a Piezo Buzzer, a Green LED, a Red LED, and the USB Webcam (as an output triggered by logic). **Total components: 9.** |
+| **`Processing` & `Business Rules Design`** | **Met.** The Raspberry Pi gateway contains extensive processing logic: checking "Maintenance Mode" status, correlating door events with camera triggers, and sending commands back to the ESP32 based on defined security rules. |
+| **`Database / Cloud` Feature** | **Met.** Google Firebase is used for both a Realtime Database (event logs, system status) and Cloud Storage (for images), demonstrating professional cloud architecture. |
+| **`User Interface` Module** | **Met.** A rich, interactive web application is built with Streamlit, providing not just reports but also two-way control (remote unlock, maintenance mode toggle). |
+| **`Analysis Report` based on Collected Data** | **Met.** The Streamlit dashboard generates a historical temperature chart (time-series analysis) and presents a real-time security event log with photographic evidence (event reports). |
+| **`On-The-Spot Evaluation`** | **Ready.** System parameters like temperature thresholds and alert logic are all managed in the Python scripts on the Raspberry Pi, making them easy to modify live during the final presentation. |
 
 ---
 
-## Technology Stack
+## 7. Technology Stack
 
 -   **Embedded:** MicroPython (on ESP32)
 -   **Backend:** Python 3
 -   **Web Framework:** Streamlit
 -   **Messaging Protocol:** MQTT
 -   **Database:** Google Firebase (Realtime Database & Cloud Storage)
--   **Key Python Libraries:** `paho-mqtt`, `firebase-admin`, `streamlit`, `opencv-python` (for the camera).
+-   **Key Python Libraries:** `paho-mqtt`, `firebase-admin`, `streamlit`, `opencv-python`.
 
 ---
 
-## Team Roles & Responsibilities
+## 8. Team Roles & Responsibilities
 
 -   **[Member 1 Name]: Embedded Systems Lead**
     -   **Responsibility:** The **NodeMCU ESP32** and all its connected sensors and actuators.
@@ -174,22 +182,28 @@ digraph Data_Model {
 
 ---
 
-## Setup & Installation
+## 9. Setup & Installation
 
-#### 1. ESP32 Node
+#### a. ESP32 Node
 1.  Flash MicroPython onto the NodeMCU ESP32.
 2.  Wire all sensors and actuators as per the hardware diagram.
 3.  Upload the `main.py` script (containing sensor, actuator, and MQTT logic) using an IDE like Thonny.
 
-#### 2. Raspberry Pi Server
-1.  Install Raspberry Pi OS.
-2.  Install required Python libraries: `pip install streamlit paho-mqtt firebase-admin opencv-python`
+#### b. Raspberry Pi Server
+1.  Install Raspberry Pi OS (64-bit recommended).
+2.  Install required Python libraries: `pip install streamlit paho-mqtt firebase-admin opencv-python Pillow`
 3.  Place your `serviceAccountKey.json` file from Firebase in the project directory.
-4.  Ensure the Logitech C270 is plugged into a USB port.
+4.  Ensure the Logitech C270 is plugged into a USB port and is recognized by the OS (test with `lsusb`).
 
-## How to Run
+## 10. How to Run
 
 1.  Power on the ESP32 node. The green LED should indicate a successful connection.
-2.  On the Raspberry Pi, run the backend gateway script in a terminal: `python gateway.py`
-3.  In a second terminal on the Raspberry Pi, run the Streamlit application: `streamlit run dashboard.py`
+2.  On the Raspberry Pi, run the backend gateway script in a terminal:
+    ```bash
+    python gateway.py
+    ```
+3.  In a second terminal on the Raspberry Pi, run the Streamlit application:
+    ```bash
+    streamlit run dashboard.py
+    ```
 4.  Access the web dashboard from any device on the network by navigating to `http://<your_pi_ip_address>:8501`.
