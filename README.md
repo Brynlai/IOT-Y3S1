@@ -99,7 +99,8 @@ The system is composed of four decoupled components communicating over the local
 2.  Open a Terminal and install system dependencies:
     ```bash
     sudo apt update && sudo apt upgrade -y
-    sudo apt install mosquitto mosquitto-clients python3-opencv -y
+    sudo apt install mosquitto mosquitto-clients
+    sudo apt install python3-opencv -y
     ```
     Now, configure it to allow connections from other devices on the network:
     ```bash
@@ -113,14 +114,23 @@ The system is composed of four decoupled components communicating over the local
     Save (`Ctrl+S`) and Exit (`Ctrl+X`). Then, enable the broker to start on boot and reboot to apply changes:
     ```bash
     sudo systemctl enable mosquitto.service
+    ```
+    ```bash
     sudo reboot
     ```
 3.  Install required Grove and Python libraries:
     ```bash
-    curl -sL https://github.com/Seeed-Studio/grove.py/raw/master/install.sh | sudo bash -s -
-    pip install paho-mqtt pyrebase4 seeed-python-dht Flask
+    curl -sL https://github.com/Seeed-Studio/grove.py/raw/master/install.sh -o install_grove.sh
+    sudo apt install -y python3-opencv python3-numpy
+
     ```
-4.  Create the directory for captured images:
+    ```bash
+    pip install paho-mqtt --break-system-packages
+    pip install pyrebase4 --break-system-packages
+    pip install Flask --break-system-packages
+    pip install seeed-python-dht --break-system-packages
+    ```
+4.  Create the directory for captured images (MUST):
     ```bash
     mkdir /home/pi/captures
     ```
