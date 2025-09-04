@@ -101,6 +101,20 @@ The system is composed of four decoupled components communicating over the local
     sudo apt update && sudo apt upgrade -y
     sudo apt install mosquitto mosquitto-clients python3-opencv -y
     ```
+    Now, configure it to allow connections from other devices on the network:
+    ```bash
+    sudo nano /etc/mosquitto/mosquitto.conf
+    ```
+    Scroll to the end of the file and add these two lines:
+    ```
+    allow_anonymous true
+    listener 1883
+    ```
+    Save (`Ctrl+S`) and Exit (`Ctrl+X`). Then, enable the broker to start on boot and reboot to apply changes:
+    ```bash
+    sudo systemctl enable mosquitto.service
+    sudo reboot
+    ```
 3.  Install required Grove and Python libraries:
     ```bash
     curl -sL https://github.com/Seeed-Studio/grove.py/raw/master/install.sh | sudo bash -s -
