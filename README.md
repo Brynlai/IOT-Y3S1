@@ -98,33 +98,41 @@ The system is composed of four decoupled components communicating over the local
 1.  Flash and boot **Raspberry Pi OS (64-bit)**.
 2.  Open a Terminal and install system dependencies:
     ```bash
+    # skip
     sudo apt update && sudo apt upgrade -y
     sudo apt install mosquitto mosquitto-clients
     sudo apt install python3-opencv -y
     ```
     Now, configure it to allow connections from other devices on the network:
     ```bash
+    # skip
     sudo nano /etc/mosquitto/mosquitto.conf
     ```
     Scroll to the end of the file and add these two lines:
     ```
+    # skip
     allow_anonymous true
     listener 1883
     ```
     Save (`Ctrl+S`) and Exit (`Ctrl+X`). Then, enable the broker to start on boot and reboot to apply changes:
     ```bash
+    # DO IMPORTANT
     sudo systemctl enable mosquitto.service
     ```
     ```bash
+    # skip
     sudo reboot
     ```
 3.  Install required Grove and Python libraries:
     ```bash
+    # Do
     curl -sL https://github.com/Seeed-Studio/grove.py/raw/master/install.sh -o install_grove.sh
+    # Skip
     sudo apt install -y python3-opencv python3-numpy
 
     ```
     ```bash
+    # Skip, do if got problem
     pip install paho-mqtt --break-system-packages
     pip install pyrebase4 --break-system-packages
     pip install Flask --break-system-packages
@@ -132,6 +140,7 @@ The system is composed of four decoupled components communicating over the local
     ```
 4.  Create the directory for captured images (MUST):
     ```bash
+    # Do
     mkdir /home/pi/captures
     ```
 
