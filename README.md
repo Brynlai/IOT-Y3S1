@@ -390,7 +390,7 @@ void loop() {
 
 ## 6. Part 4: User Interface Setup (Streamlit Dashboard)
 Run this on a laptop on the same network.
-1.  **Install Dependencies:** `pip install streamlit paho-mqtt pyrebase4 pandas`
+1.  **Install Dependencies:** `pip install streamlit paho-mqtt pyrebase4 setuptools`
 2.  **Create `dashboard.py`** and paste the following. **Ensure `RPI_IP_ADDRESS` is correct.**
     ```python
     # FILE: dashboard.py (FINAL VERSION with Camera Display)
