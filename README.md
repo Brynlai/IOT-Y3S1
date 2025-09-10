@@ -185,7 +185,7 @@ sensor = DHT("11", DHT_PIN); buzzer = GPIO(BUZZER_PIN, GPIO.OUT)
 fan_relay = GPIO(FAN_RELAY_PIN, GPIO.OUT); lock_relay = GPIO(LOCK_RELAY_PIN, GPIO.OUT)
 print("Initializing camera...")
 camera = cv2.VideoCapture(0)
-time.sleep(1) # CRITICAL FIX: Give the camera time to initialize.
+time.sleep(5) # CRITICAL FIX: Give the camera time to initialize.
 print("Camera initialized.")
 
 # --- Core Functions ---
@@ -246,14 +246,14 @@ def main():
     try:
         while True:
             current_time = time.time()
-            if current_time - last_sensor_read > 5:
+            if current_time - last_sensor_read > 1:
                 humi, temp = sensor.read()
                 if humi is not None and temp is not None:
                     setText_norefresh("Temp: {:.1f}\u00b0C\nHumi: {:.1f}%".format(temp, humi))
                     control_fan(temp); update_firebase_status(temp, humi)
                     last_sensor_read = current_time
                 else: setText_norefresh("Sensor Error...")
-            if current_time - last_history_log > 60:
+            if current_time - last_history_log > 10:
                 if 'temp' in locals() and temp is not None: log_sensor_history(temp, humi); last_history_log = current_time
             time.sleep(0.1)
     except KeyboardInterrupt: print("\nCtrl+C detected. Shutting down.")
@@ -352,7 +352,7 @@ Paste into Arduino IDE and upload. **Ensure `MQTT_BROKER_IP` is correct.**
 #include <PubSubClient.h>
 
 const int REED_SWITCH_PIN = 15; const int GREEN_LED_PIN = 23; const int RED_LED_PIN = 22;
-const char* WIFI_SSID = "B100M-T8"; const char* WIFI_PASSWORD = "12345678";
+const char* WIFI_SSID = "B100M-T1"; const char* WIFI_PASSWORD = "12345678";
 const char* MQTT_BROKER_IP = "192.168.0.106"; // <<< YOUR RASPBERRY PI's IP
 const int MQTT_PORT = 1883; const char* MQTT_DOOR_TOPIC = "server-room/01/status/door";
 
