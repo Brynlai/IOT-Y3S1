@@ -57,7 +57,6 @@ The system is composed of four decoupled components communicating over the local
 | 1   | 10kΩ Resistor (Brown-Black-Orange) | Reed Switch Pull-up                |
 | 2   | 1kΩ Resistors (Brown-Black-Red) | LED Current Limiting               |
 | 1   | 5V DC Fan & 6V Solenoid Lock    | Actuators                          |
-| 1   | 1N4001 Flyback Diode            | **MANDATORY** for Solenoid         |
 | -   | Power Supplies (USB-C for RPi, Micro-USB for ESP32, 6V Adapter for Lock) | Power                             |
 
 ## 3. Part 1: Cloud Backend Setup (Firebase)
@@ -92,7 +91,6 @@ The system is composed of four decoupled components communicating over the local
     *   **6V** Adapter `(+)` wire -> Relay `COM` terminal.
     *   Relay `NO` terminal -> Solenoid `Red (+)` wire.
     *   Solenoid `Black (-)` wire -> **6V** Adapter `(-)` wire.
-    *   **Flyback Diode:** Connect across the Solenoid terminals. **Silver stripe on diode to Solenoid's Red (+)**.
 
 ### 4.2 RPi OS & Software Installation
 1.  Flash and boot **Raspberry Pi OS (64-bit)**.
