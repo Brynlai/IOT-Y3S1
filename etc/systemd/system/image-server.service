@@ -1,0 +1,12 @@
+[Unit]
+Description=Flask Image Server for Server Monitor
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/pi/image_server.py
+WorkingDirectory=/home/pi
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target
